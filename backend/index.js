@@ -13,5 +13,6 @@ api.use(cors());
 api.use('/', require('./routes/index'));
 api.use('/api', require('./routes/api'));
 
-const APIPORT = 5000;
-api.listen(APIPORT, () => console.log(`API service running on port: ${APIPORT}`));
+const _PORT = 5000;
+api.set('port', process.env.PORT || _PORT);
+api.listen(api.get('port'), () => console.log(`API service running on port: ${_PORT}`));
