@@ -1,4 +1,4 @@
 {
-    "mongoURI": "mongodb+srv://api-user:7Asp33iNzNU4Zvlw@jdngr-iyvir.gcp.mongodb.net/test?retryWrites=true&w=majority",
+    "mongoURI": "YOUR MONGO ATLAS CONNECTION STRING",
     "baseURL": "http://localhost:5000"
 }
