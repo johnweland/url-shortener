@@ -12,6 +12,7 @@ api.use(cors());
 // Define Routes
 api.use('/', require('./routes/index'));
 api.use('/api', require('./routes/api'));
+api.use('/user', require('./routes/user'));
 
 const _PORT = 5000;
 api.set('port', process.env.PORT || _PORT);
