@@ -1,30 +1,44 @@
 const express = require('express');
 const router = express.Router();
-var cors = require('cors');
+const cors = require('cors');
 const validURL = require('valid-url');
 const shortid = require('shortid');
 const config = require('config');
+const bodyParser = require('body-parser');
 
 const Url = require('../models/url');
+router.use(bodyParser.urlencoded({extended: true}));
+router.use(bodyParser.json({extended: true}));
 
 // @route POST /api/create
 // @desc       Create short URL
-router.post('/create', async (req, res) => {
+router.post('/create', cors(), async (req, res, next) => {
     try {
-        const { longURL } = req.body;
+        let { longURL } = req.body;
         let { urlCode } = req.body;
         const baseURL = config.get('baseURL');
-
         if (!validURL.isUri(baseURL)) {
-            return res.status(400).json('Invalid baseURL');
+            return res.status(400).json({
+                statuscode: 'danger',
+                status: 'Error',
+                msg: 'Invalid Base URL'
+            });
         }
         if (!validURL.isUri(longURL)) {
-            return res.status(400).json('Invalid URL');
+            return res.status(400).json({
+                statuscode: 'danger',
+                status: 'Error',
+                msg: 'Invalid URL'
+            });
         }
         
         let codeCheck = await Url.findOne({urlCode});
         if (codeCheck) {
-            return res.status(409).json(`custom CODE: "${urlCode}", already exists.`);
+            return res.status(409).json({
+                statuscode: 'danger',
+                status: 'Error',
+                msg: `custom CODE: "${urlCode}", already exists.`
+            });
         }
 
         if (!urlCode || urlCode == 'undefined') {
@@ -39,7 +53,11 @@ router.post('/create', async (req, res) => {
               }
             } catch (error) {
               console.error(err);
-              return res.status(500).json('Server error');
+              return res.status(500).json({
+                statuscode: 'danger',
+                status: 'Error',
+                msg: 'Internal Server Error'
+              });
             }
         } while (duplicateCode);
         
@@ -48,49 +66,71 @@ router.post('/create', async (req, res) => {
         if (url) {
             res.json(url);
         } else {
-            const shortURL = baseURL + '/' + urlCode;
+            let shortURL = baseURL + '/' + urlCode;
+            shortURL.trim();
             url = new Url({
                 longURL,
                 shortURL,
                 urlCode,
-                date: Date.now()
+                date: new Date,
+                clicks: 0
             });
 
             await url.save();
-            res.json(url);
+            res.json({
+                statuscode: 'success',
+                status: 'Success',
+                msg: `URL Created`
+            });
         }
     } catch (err) {
         console.error(err);
-        res.status(500).json(`Server Error: ${err}`);
+        res.status(500).json({
+            statuscode: 'danger',
+            status: 'Error',
+            msg: `Internal Server Error: ${err}`
+        });
     }
 });
 
 // @route GET /api/delete
 // @desc       Delete a short URL
-router.post('/delete', async (req, res) => {
+router.post('/delete', cors(), async (req, res, next) => {   
     const { id } = req.body;
     try {
-        let list = await Url.findByIdAndDelete(id, (err, data)=> {
+        await Url.findByIdAndDelete(id, (err)=> {
             if (err) {
                 throw error;
             }
-            return res.status(204).json('Deletetion successful');
+            return res.status(200).json({
+                statuscode: 'success',
+                status: 'Success',
+                msg: `URL Deleted`
+            });
         });
     } catch (err) {
         console.error(err);
-        res.status(500).json('Server error');
+        res.status(500).json({
+            statuscode: 'danger',
+            status: 'Error',
+            msg: `Internal Server Error: ${err}`
+        });
     }
 });
 
 // @route GET /api/list
 // @desc       List short URLs
-router.get('/list', cors(), async (req, res) => {
+router.get('/list', cors(), async (req, res, next) => {
     try {
         let list = await Url.find();
         res.json({'data': list});
     } catch (err) {
         console.error(err);
-        res.status(500).json('Server error');
+        res.status(500).json({
+            statuscode: 'danger',
+            status: 'Error',
+            msg: `Internal Server Error: ${err}`
+        });
     }
 });
 
