@@ -103,8 +103,6 @@ exports.delete = async (req, res, next) => {
 }
 
 exports.list = async (req, res, next) => {
-    console.log('==========');
-    console.log(process.env.BASE_URL);
     await Url.find()
     .exec()
     .then((list) => {
