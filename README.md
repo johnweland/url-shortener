@@ -4,18 +4,17 @@
 
 ### Deploy live
 1. deploy to a service like Heroku
-2. Set the following env
+2. Set the following env variables
     - MONGO_URI
     - JWT_KEY
     - BASE_URL
+3. point your domain to your Heroku app
 
-> Note: 
->
 > *MONGO_URI* must be to your MongoDB server or Mongo Atlas.
 >
 > *JWT_KEY* should be a random string.
 >
-> *BASE_URL* should be the domain you want to use. If running on any port other that `:80` you must include that in the base url.
+> *BASE_URL* should be the domain you want to use. The one you pointed to Heroku. If running on any port other than `:80` you must include that in the base url.
 
 ### Deploy Dev
 clone this repository to you machine
