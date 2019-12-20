@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const auth = require('../../middleware/check-auth');
 
 const UserController = require('../../contollers/user');
 
@@ -15,6 +14,6 @@ router.post('/auth', UserController.auth);
 
 // @route DELETE /:id
 // @desc       Delete an API user
-router.delete('/:id', UserController.delete);
+router.delete('/:id', auth, UserController.delete);
 
 module.exports = router;
