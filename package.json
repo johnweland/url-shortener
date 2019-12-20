@@ -1,15 +1,22 @@
 {
-  "name": "api",
+  "name": "url-shortener",
   "version": "1.0.0",
-  "description": "",
+  "description": "A means of shortening lengthy URLs",
   "main": "api.js",
   "scripts": {
     "start": "node api",
     "dev": "nodemon api"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["url", "REST API", "url shorten"],
+  "author": "John Weland <john.weland@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnweland/url-shortener.git"
+  },
+  "bugs": {
+    "url": "https://github.com/johnweland/url-shortener/issues"
+  },
   "dependencies": {
     "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",
