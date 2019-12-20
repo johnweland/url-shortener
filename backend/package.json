@@ -2,10 +2,10 @@
   "name": "api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "api.js",
   "scripts": {
-    "start": "node server",
-    "dev": "nodemon server"
+    "start": "node api",
+    "dev": "nodemon api"
   },
   "keywords": [],
   "author": "",

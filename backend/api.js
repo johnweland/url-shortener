@@ -1,4 +1,5 @@
 const express = require('express');
+const port = process.env.PORT || 5000;
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -57,4 +58,4 @@ api.use((error, req, res, next) => {
     })
 });
 
-module.exports = api;
+api.listen(port);
