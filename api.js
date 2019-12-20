@@ -1,5 +1,6 @@
 const express = require('express');
 const port = process.env.PORT || 5000;
+const mongouri = process.env.MONGO_URI || null;
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -8,9 +9,7 @@ const mongoose = require('mongoose');
 const api = express();
 // Connect to MongoDB
 mongoose.connect(
-    'mongodb+srv://api-user:' + 
-    process.env.MONGO_ATLAS_PW + 
-    '@jdngr-iyvir.gcp.mongodb.net/test?retryWrites=true&w=majority',
+    mongouri,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
