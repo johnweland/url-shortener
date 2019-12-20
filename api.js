@@ -62,4 +62,6 @@ api.use((error, req, res, next) => {
     })
 });
 
-api.listen(port);
+api.listen(port, () => {
+    console.log(`API Server running on port ${port}`);
+});
