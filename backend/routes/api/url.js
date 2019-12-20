@@ -8,6 +8,8 @@ const auth = require('../../middleware/check-auth');
 const baseURL = process.env.BASE_URL
 const Url = require('../../models/url');
 
+
+
 // @route POST /api/url/create
 // @desc       Create short URL
 router.post('/create', auth, async (req, res, next) => {
@@ -93,43 +95,37 @@ router.post('/create', auth, async (req, res, next) => {
 
 // @route GET /api/url/:id
 // @desc       Delete a short URL
-router.delete('/:id', auth, async (req, res, next) => {   
+router.delete('/:id', async (req, res, next) => {   
     const { id } = req.params;
-    try {
-        await Url.findByIdAndDelete(id, (err)=> {
-            if (err) {
-                throw error;
-            }
-            return res.status(200).json({
-                statuscode: 'success',
-                status: 'Success',
-                msg: `URL Deleted`
-            });
+    await Url.findByIdAndDelete(id)
+    .exec()
+    .then(result => {
+        res.status(200).json({
+            message: "URL deleted."
         });
-    } catch (err) {
+    })
+    .catch(err => {
         console.error(err);
         res.status(500).json({
-            statuscode: 'danger',
-            status: 'Internal Server Error: ',
-            msg: `${err}`
+            error: err
         });
-    }
+    });
 });
 
 // @route GET /api/url/list
 // @desc       List short URLs
 router.get('/list', async (req, res, next) => {
-    try {
-        let list = await Url.find();
+    await Url.find()
+    .exec()
+    .then((list) => {
         res.json({'data': list});
-    } catch (err) {
+    })
+    .catch(err => {
         console.error(err);
         res.status(500).json({
-            statuscode: 'danger',
-            status: 'Internal Server Error: ',
-            msg: `${err}`
+            error: err
         });
-    }
+    });
 });
 
 module.exports = router;
