@@ -5,8 +5,13 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-
 const api = express();
+console.log('==========');
+console.log(process.env.PORT);
+console.log('==========');
+console.log(process.env.MONGO_URI);
+
+
 // Connect to MongoDB
 mongoose.connect(
     mongouri,

@@ -6,6 +6,8 @@ const Url = require('../models/url');
 
 exports.create = async (req, res, next) => {
     try {
+        console.log('==========');
+console.log(process.env.BASE_URL);
         let { longURL } = req.body;
         let { urlCode } = req.body;
         if (!validURL.isUri(baseURL)) {
