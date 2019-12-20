@@ -5,7 +5,7 @@ const dt =  {
         $('body').on('click', '.add', dt.add);
         $('body').on('click', '.delete', dt.delete);
         dt.table = $('#datatable').DataTable({
-            ajax: "http://localhost:5000/api/list",
+            ajax: "http://localhost:5000/api/url/list",
             columns: [
                 {data:null, title: "Action", class: "col-action"},
                 {data:"longURL", title:"Original", class: "col-origin"},
@@ -68,7 +68,7 @@ const dt =  {
         data.longURL = $(".add-longURL input").val().trim();
         data.urlCode = $(".add-urlCode input").val() !== "" ? $(".add-urlCode input").val().trim() : null;
         $.ajax({
-            url: "http://localhost:5000/api/create",
+            url: "http://localhost:5000/api/url/create",
             data: data,
             method: 'POST',
             dataType: 'json'
@@ -77,13 +77,9 @@ const dt =  {
         }).always(data => utils.alert.create(data));
     },
     delete: (e) => {
-  
-        let data = {};
-        data.id = $(e.target).data('id');
         $.ajax({
-            url: "http://localhost:5000/api/delete",
-            data: data,
-            method: 'POST',
+            url: "http://localhost:5000/api/url/" + $(e.target).data('id'),
+            method: 'DELETE',
             dataType: 'json'
         }).done(() => {
             dt.table.ajax.reload();

@@ -5,14 +5,15 @@ const validURL = require('valid-url');
 const shortid = require('shortid');
 const config = require('config');
 const bodyParser = require('body-parser');
+const auth = require('../../middleware/check-auth');
 
-const Url = require('../models/url');
+const Url = require('../../models/url');
 router.use(bodyParser.urlencoded({extended: true}));
 router.use(bodyParser.json({extended: true}));
 
-// @route POST /api/create
+// @route POST /api/url/create
 // @desc       Create short URL
-router.post('/create', cors(), async (req, res, next) => {
+router.post('/create', cors(), auth, async (req, res, next) => {
     try {
         let { longURL } = req.body;
         let { urlCode } = req.body;
@@ -87,16 +88,16 @@ router.post('/create', cors(), async (req, res, next) => {
         console.error(err);
         res.status(500).json({
             statuscode: 'danger',
-            status: 'Error',
-            msg: `Internal Server Error: ${err}`
+            status: 'Internal Server Error: ',
+            msg: `${err}`
         });
     }
 });
 
-// @route GET /api/delete
+// @route GET /api/url/delete
 // @desc       Delete a short URL
-router.post('/delete', cors(), async (req, res, next) => {   
-    const { id } = req.body;
+router.delete('/:id', cors(), auth ,async (req, res, next) => {   
+    const { id } = req.params;
     try {
         await Url.findByIdAndDelete(id, (err)=> {
             if (err) {
@@ -112,13 +113,13 @@ router.post('/delete', cors(), async (req, res, next) => {
         console.error(err);
         res.status(500).json({
             statuscode: 'danger',
-            status: 'Error',
-            msg: `Internal Server Error: ${err}`
+            status: 'Internal Server Error: ',
+            msg: `${err}`
         });
     }
 });
 
-// @route GET /api/list
+// @route GET /api/url/list
 // @desc       List short URLs
 router.get('/list', cors(), async (req, res, next) => {
     try {
@@ -128,8 +129,8 @@ router.get('/list', cors(), async (req, res, next) => {
         console.error(err);
         res.status(500).json({
             statuscode: 'danger',
-            status: 'Error',
-            msg: `Internal Server Error: ${err}`
+            status: 'Internal Server Error: ',
+            msg: `${err}`
         });
     }
 });
