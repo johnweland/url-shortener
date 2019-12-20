@@ -1,23 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const cors = require('cors');
 const validURL = require('valid-url');
 const shortid = require('shortid');
-const config = require('config');
-const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const auth = require('../../middleware/check-auth');
 
+const baseURL = process.env.BASE_URL
 const Url = require('../../models/url');
-router.use(bodyParser.urlencoded({extended: true}));
-router.use(bodyParser.json({extended: true}));
 
 // @route POST /api/url/create
 // @desc       Create short URL
-router.post('/create', cors(), auth, async (req, res, next) => {
+router.post('/create', auth, async (req, res, next) => {
     try {
         let { longURL } = req.body;
         let { urlCode } = req.body;
-        const baseURL = config.get('baseURL');
         if (!validURL.isUri(baseURL)) {
             return res.status(400).json({
                 statuscode: 'danger',
@@ -70,6 +66,7 @@ router.post('/create', cors(), auth, async (req, res, next) => {
             let shortURL = baseURL + '/' + urlCode;
             shortURL.trim();
             url = new Url({
+                _id: new mongoose.Types.ObjectId(),
                 longURL,
                 shortURL,
                 urlCode,
@@ -94,9 +91,9 @@ router.post('/create', cors(), auth, async (req, res, next) => {
     }
 });
 
-// @route GET /api/url/delete
+// @route GET /api/url/:id
 // @desc       Delete a short URL
-router.delete('/:id', cors(), auth ,async (req, res, next) => {   
+router.delete('/:id', auth, async (req, res, next) => {   
     const { id } = req.params;
     try {
         await Url.findByIdAndDelete(id, (err)=> {
@@ -121,7 +118,7 @@ router.delete('/:id', cors(), auth ,async (req, res, next) => {
 
 // @route GET /api/url/list
 // @desc       List short URLs
-router.get('/list', cors(), async (req, res, next) => {
+router.get('/list', async (req, res, next) => {
     try {
         let list = await Url.find();
         res.json({'data': list});

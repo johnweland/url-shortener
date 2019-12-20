@@ -1,17 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 const User = require('../../models/user');
-router.use(bodyParser.urlencoded({extended: true}));
-router.use(bodyParser.json({extended: true}));
 
 // @route POST /register
 // @desc       Create an API user
-router.post('/register', cors(), async (req, res, next) => {  
+router.post('/register', async (req, res, next) => {  
     await User.findOne({ email: req.body.email })
     .exec()
     .then(conflict => {
@@ -32,6 +29,7 @@ router.post('/register', cors(), async (req, res, next) => {
                 });
             }
             const user = new User({
+                _id: new mongoose.Types.ObjectId(),
                 email: req.body.email,
                 password: hash
             });
@@ -58,7 +56,7 @@ router.post('/register', cors(), async (req, res, next) => {
 
 // @route POST /auth
 // @desc       Authenticate an API user
-router.post('/auth', cors(), async (req, res, next) => {
+router.post('/auth', async (req, res, next) => {
     await User.findOne({ email: req.body.email })
     .exec()
     .then(user => {
@@ -112,7 +110,7 @@ router.post('/auth', cors(), async (req, res, next) => {
 
 // @route DELETE /:id
 // @desc       Delete an API user
-router.delete('/:id', cors(), async (req, res, next) => {
+router.delete('/:id', async (req, res, next) => {
     const { id } = req.params;
     await User.findByIdAndDelete(id)
     .exec()

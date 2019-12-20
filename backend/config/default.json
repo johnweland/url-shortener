@@ -1,4 +1,0 @@
-{
-    "mongoURI": "YOUR MONGO ATLAS CONNECTION STRING",
-    "baseURL": "http://localhost:5000"
-}

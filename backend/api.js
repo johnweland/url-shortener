@@ -1,16 +1,42 @@
 const express = require('express');
-const cors = require('cors');
 const morgan = require('morgan');
-const connectDB = require('./config/db');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 
 const api = express();
 // Connect to MongoDB
-connectDB();
+mongoose.connect(
+    'mongodb+srv://api-user:' + 
+    process.env.MONGO_ATLAS_PW + 
+    '@jdngr-iyvir.gcp.mongodb.net/test?retryWrites=true&w=majority',
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+        useCreateIndex: true
+    }
+);
 
-api.use(express.json({ extended: false }));
-api.use(cors());
+api.use(bodyParser.urlencoded({extended: true}));
+api.use(bodyParser.json());
 api.use(morgan('dev'));
+
+api.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    );
+    if (req.method === 'OPTIONS') {
+        res.header(
+            'Access-Control-Allow-Methods',
+            'PUT, POST, PATCH, DELETE, GET'
+        );
+        return res.status(200).json({});
+    }
+    next();
+});
 
 // Define Routes
 api.use('/', require('./routes/index'));

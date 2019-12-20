@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const urlScheme = new mongoose.Schema({
+    _id: mongoose.Types.ObjectId,
     urlCode: String,
     longURL: String,
     shortURL: String,
@@ -8,4 +9,4 @@ const urlScheme = new mongoose.Schema({
     clicks: Number
 });
 
-module.exports = mongoose.model('url', urlScheme);
+module.exports = mongoose.model('Url', urlScheme);
