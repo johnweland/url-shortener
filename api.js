@@ -58,6 +58,6 @@ api.use((error, req, res, next) => {
     })
 });
 
-api.listen(56111, () => {
+api.listen(port, () => {
     console.log(`API Server running on port ${port}`);
 });
