@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+
+    <title>URL Shortener UI</title>
 </head>
 <body>
-    <div class="container">
+    <div class="container my-5">
         <h1>URL Shortener</h1>
-        <form action="/shorten" method ="POST" class="form-inline my-4">
+        <form action="/shorten" method="POST" class="form-inline my-4">
             <label for="fullUrl" class="sr-only">URL</label>
             <input type="url" name="fullUrl" id="fullUrl" placeholder="URL" class="form-control col mx-1">
             <button type="submit" class="btn btn-primary">Shorten</button>
         </form>
-        <table class="table table-dark table-hover table-striped">
+        <table class="table table-hover table-striped">
             <thead>
                 <tr>
                     <th>Action</th>
@@ -27,7 +29,8 @@
                 <% urls.forEach(url => { %>
                     <tr>
                         <td>
-                            -
+                            <span class="far fa-trash-alt" data-url="<%= url.short %>"></span>
+                            <span class="fas fa-share-alt" title="<%= url.short %>"></span>
                         </td>
                         <td>
                             <a href="<%= url.full %>"><%= url.full %></a>
@@ -41,7 +44,6 @@
                     </tr>
                 <% }) %>
             </tbody>
-            <tfoot>Table footer</tfoot>
         </table>
     </div>
 
