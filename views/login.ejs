@@ -1,0 +1,38 @@
+<div class="container my-5">
+	<div class="row mt-5 center">
+		<div class="col-md-6 m-auto text-center">
+			<i class="fas fa-5x fa-sign-in-alt" aria-hidden="true"></i>  
+			<h1 class="text-center mb-3">Please sign in</h1>
+			<%- include('./partials/messages.ejs'); %>
+			<form action="/user/login" method="POST">
+			<div class="form-group">
+				<label for="email" class="sr-only">Email Address</label>
+				<input
+				type="email"
+				id="email"
+				name="email"
+				class="form-control"
+				placeholder="Email Address"
+				required
+				autofocus
+				/>
+			</div>
+			<div class="form-group">
+				<label for="password" class="sr-only">Password</label>
+				<input
+				type="password"
+				id="password"
+				name="password"
+				class="form-control"
+				placeholder="Password"
+				required
+				/>
+			</div>
+			<button type="submit" class="btn btn-primary btn-block">Login</button>
+			</form>
+			<p class="lead mt-4">
+				No Account? <a href="/user/register">Register</a>
+			</p>
+		</div>
+	</div>
+</div>
