@@ -15,7 +15,7 @@ exports.redirect = async (req, res, next) => {
 }
 
 exports.delete = async (req, res, next) => {
-    const url = await urlModel.findOneAndRemove({short: req.params.url});
+    const url = await Url.findOneAndRemove({short: req.params.url});
     if (url == null) return res.sendStatus(404);
     res.redirect(204, '/');
 }
