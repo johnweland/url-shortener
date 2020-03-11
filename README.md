@@ -6,13 +6,17 @@
 1. deploy to a service like Heroku
 2. Set the following env variables
     - MONGO_URI
-    - JWT_KEY
+    - SESSION_SECRET
     - BASE_URL
 3. point your domain to your Heroku app
 
 > *MONGO_URI* must be to your MongoDB server or Mongo Atlas.
+> 
+> *ACCESS_TOKEN_SECRET* nice long mybe 64bytes to hex
 >
-> *JWT_KEY* should be a random string.
+> *REFRESH_TOKEN_SECRET* nice long mybe 64bytes to hex
+>
+> *SESSION_SECRET* nice long mybe 64bytes to hex
 >
 > *BASE_URL* should be the domain you want to use. The one you pointed to Heroku. If running on any port other than `:80` you must include that in the base url.
 
@@ -51,77 +55,57 @@ End Use
 GET /:code
 ```
 ex http://short.ly/RANDOM
-The above example looks for a request to /:urlCode with a `GET` method.
+The above example looks for a request to /:url with a `GET` method.
 If the URL exists it redirects to the large URL it links to.
 
 
 ### User Endpoints
 To register a new API user...
 ```
-POST /api/user/register
+POST user/register
 {
+    name: *what you want to be called*
     email: *valid email required*
     password: *gets hashed*
 }
 ```
-The above example looks for a request to /api/url/create with a `POST` method.
+The above example looks for a request to /user/register with a `POST` method.
 
 To authenticate and authorize an API user...
 
 ```
-POST /api/user/auth
+POST /user/login
 {
     email: *valid email required*
     password: *is hashed*
 }
 ```
-The above example looks for a request to /api/user/auth with a `POST` method and returns a token
+The above example looks for a request to /user/login with a `POST` method.
 
-```
-DELETE /api/user/:id
-{
-    email: *valid email required*
-    password: *is hashed*
-}
-```
-
-The above example looks for a request to /api/user/:id with a `DELETE` method. *:id* is the id of the user as saved in Mongo DB.
-
-*For the /api/user endpoint this is the only protected route*
 
 ### URL Endpoints
 
 To Create a short URL using your base URL
 ```
-POST /api/url/create
+POST /shorten
 {
-    urlCode: *optional*,
-    longURL: http://long.amazon.com/url/with/lots/of?querystring=params,
-    token: *authentication-token*
+    full: http://long.amazon.com/url/with/lots/of?querystring=params,
 }
 ```
-The above example looks for a request to /api/url/create with a `POST` method.
+The above example looks for a request to /shorten with a `POST` method.
 Leaving urlCode as null, the API will automatically create one.
 The example above would result in http://short.ly/RANDOM
 
-However, if you specify one like 'twitch' would result in http://short.ly/twitch
-
 To delete a short URL using its *_id* field...
 ```
-DELETE /api/url/:id
-{
-    token: *authentication-token*
-}
+DELETE /url/:id
 ```
-The above example looks for a request to /api/url/:id with a `DELETE` method. :id is the id of the url as saved in Mongo DB.
+The above example looks for a request to /url/:id with a `DELETE` method. :id is the id of the url as saved in Mongo DB.
 
 To retrieve and array of URL...
 ```
-GET /api/url/list
-{
-    token: *authentication-token*
-}
+GET /
 ```
-The above example looks for a request to /api/url/list with a `GET` method and will return a array of URLs.
+The above example looks for a request to / with a `GET` method and will renderthe UI with URLs from MongoDB.
 
-*All requests to /api/url requires and authentication token.*
+*All requests to /url requires authentication.*
