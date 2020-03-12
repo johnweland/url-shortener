@@ -23,7 +23,11 @@ app.use(flash());
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+        expires: new Date(Date.now() + 1800000),
+        maxAge: 1800000
+    } 
 }));
 app.use(passport.initialize());
 app.use(passport.session());
