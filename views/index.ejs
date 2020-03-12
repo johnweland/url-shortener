@@ -1,5 +1,5 @@
 <nav class="navbar navbar-light bg-light">
-    <span class="navbar-text">Welcome, <%= name %></span>
+<span class="navbar-text">Welcome, <% if(name) { %> <%= name %> <% } %> </span>
     <div class="dropdown">
         <span id="dropdown-toggle" class="far fa-2x fa-user-circle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></span>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
@@ -8,6 +8,7 @@
       </div>
 </nav>
 <div class="container my-5">
+    <%- include('./partials/messages.ejs'); %>
     <h1>URL Shortener</h1>
     <form action="/shorten" method="POST" class="form-inline my-4">
         <label for="fullUrl" class="sr-only">URL</label>

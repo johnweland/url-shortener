@@ -1,7 +1,8 @@
 const Url = require('../models/url');
 
 exports.create = async (req, res, next) => {
-    await Url.create({ full: req.body.fullUrl});
+    await Url.create({ full: req.body.fullUrl, created_user: req.user.id});
+    req.flash('success', 'Short URL Created')
     res.redirect('/');
 }
 
