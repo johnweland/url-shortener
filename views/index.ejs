@@ -28,8 +28,8 @@
             <% urls.forEach(url => { %>
                 <tr>
                     <td>
-                        <span class="fas fa-trash" data-url="<%= url.short %>"></span>
-                        <span class="fas fa-clipboard" title="<%= host + url.short %>"></span>
+                        <span class="fas fa-trash" title="delete url" data-url="<%= url.short %>"></span>
+                        <span class="fas fa-clipboard" title="copy to clipboard" data-url="<%= host + url.short %>"></span>
                     </td>
                     <td>
                         <a href="<%= url.full %>"><%= url.full %></a>
