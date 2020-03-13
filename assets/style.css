@@ -10,3 +10,9 @@ body {
 footer {
     margin-top: auto;
 }
+
+
+.fas.fa-trash:hover,
+.fas.fa-clipboard:hover {
+    cursor: pointer;
+}
