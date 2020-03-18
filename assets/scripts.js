@@ -18,3 +18,20 @@ for(let i=0; i< clipboard.length; i++){
 
 
 
+let deleteBtn = document.getElementsByClassName('fa-trash');
+
+for(let i=0; i< deleteBtn.length; i++){
+    deleteBtn[i].onclick = function() { 
+        let url = '/shorten/' + this.getAttribute('data-url');
+        const xhr = new XMLHttpRequest();
+        xhr.open("DELETE", url, true);
+        xhr.onload = function () {
+            if (xhr.readyState == 4 && xhr.status == "204") {
+                location.reload();
+            } else {
+                console.error("Failed to remove URL");
+            }
+        }
+        xhr.send();
+    }
+}
