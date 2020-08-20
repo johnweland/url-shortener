@@ -22,7 +22,7 @@
     "url": "https://github.com/johnweland/url-shortener/issues"
   },
   "dependencies": {
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
     "ejs": "^3.0.1",
