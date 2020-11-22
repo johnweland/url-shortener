@@ -7,7 +7,7 @@ const passport       = require('passport');
 
 const app            = express();
 
-require('./middleware/passport-config')(passport);
+require('@middleware/passport-config')(passport);
 
 mongoose.connect(process.env.MONGO_URI, {
     useCreateIndex: true,
