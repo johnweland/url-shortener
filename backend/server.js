@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express        = require('express');
 const mongoose       = require('mongoose');
+const cors           = require('cors');
 const server         = express();
 
 mongoose.connect(process.env.MONGO_URI, {
@@ -11,6 +12,7 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 server.use(express.urlencoded({extended: false}));
 server.use(express.json());
+server.use(cors());
 
 server.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -32,5 +34,5 @@ server.use('/', (req, res)=> {
     res.send("Hello World");
 });
 
-let PORT = process.env.PORT || 5000;
-server.listen(PORT, console.log(`listening on port ${PORT}`));
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => console.log(`listening on port ${PORT}`));
