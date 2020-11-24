@@ -1,0 +1,15 @@
+html {
+    height: 100vh;
+}
+
+body, #root {
+    min-height: 100vh;
+}
+
+button.nav-link {
+    font-family: inherit;
+    border: unset;
+    background-color: unset;
+    outline: unset;
+
+}

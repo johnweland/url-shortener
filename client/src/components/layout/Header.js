@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import AuthOptions from '../auth/AuthOptions'
 export default function Header() {
     return (
-        <nav className="navbar navbar-expand-md navbar-light bg-light">
+        <nav className="navbar navbar-expand-md navbar-light bg-light shadow-lg">
             <div className="container-fluid">
                 <Link to="/" className="navbar-brand">
                     <img src={process.env.PUBLIC_URL + 'favicon-32x32.png'} alt="" width="24" height="24" className="d-inline-block align-middle" /> URL Shortener
