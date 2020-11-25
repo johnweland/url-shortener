@@ -6,6 +6,7 @@
     "scripts": {
         "start": "node server",
         "server": "nodemon server",
+        "docs": "apidoc ./ -e node_modules -o ./docs",
         "test": "echo \"Error: no test specified\" && exit 0"
     },
     "keywords": [
@@ -34,6 +35,7 @@
         "morgan": "^1.9.1"
     },
     "devDependencies": {
+        "apidoc": "^0.25.0",
         "nodemon": "^2.0.2"
     },
     "_moduleAliases": {

@@ -2,7 +2,7 @@ const User = require('@models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-exports.register = async (req, res, next) => {
+exports.register = async (req, res) => {
     try {
         let { email, password, passwordCheck, displayName } = req.body;
         if (!email || !password || !passwordCheck) {
@@ -12,7 +12,7 @@ exports.register = async (req, res, next) => {
             return res.status(400).json({ message: "The password needs to be at least 5 characters long." });
         }
         if (password !== passwordCheck) {
-            return res.status(400).json({ message: "PAssword and Password Confirmation do not match"});
+            return res.status(400).json({ message: "Password and Password Confirmation do not match."});
         }
     
         const existingUser = await User.findOne({ email: email });
@@ -30,14 +30,17 @@ exports.register = async (req, res, next) => {
             password: hash,
             displayName
         });
-        const savedUser = await newUser.save();
-        res.status(201).json(savedUser);
+        await newUser.save();
+        res.status(201).json({
+            email,
+            displayName
+        });
     } catch (err) {
         res.status(500).json({message: err.message});
     }
 }
 
-exports.login = async (req, res, next) => {
+exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -45,11 +48,11 @@ exports.login = async (req, res, next) => {
         }
         const user = await User.findOne({ email: email });
         if(!user) {
-            return res.status(404).json({message: 'Invalid credentials.'});
+            return res.status(401).json({message: 'Invalid credentials.'});
         }
         const isMatch = await bcrypt.compare(password, user.password);
         if(!isMatch) {
-            return res.status(404).json({message: 'Invalid credentials.'});
+            return res.status(401).json({message: 'Invalid credentials.'});
         }
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
         res.status(200).json({
@@ -65,37 +68,44 @@ exports.login = async (req, res, next) => {
     }
 }
 
-exports.validate = async (req, res, next) => {
+exports.validate = async (req, res) => {
     try {
         const token = req.header("x-auth-token");
-        if (!token) return res.json(false);
+        if (!token) return res.status(400).json(false);
         const verified = jwt.verify(token, process.env.JWT_SECRET);
-        if (!verified) return res.json(false);
+        if (!verified) return res.status(401).json(false);
         const user = await User.findById(verified.id);
-        if (!user) return res.json(false);
+        if (!user) return res.status(404).json(false);
 
-        return res.json(true);
+        return res.status(200).json(true);
 
     } catch (err) {
-        res.status(500).json({ errors: {message: err.message} });
+        res.status(500).json({ message: err.message });
     }
 }
 
-exports.get = async (req, res, next) => {
+exports.get = async (req, res) => {
+    try {
     const user = await User.findById(req.user);
-    res.json({
-        id :user._id,
-        displayName: user.displayName,
-        email: user.email
-    });
+        if(!user) {
+            return res.status(404).json({message: 'User not found'});
+        }
+        res.status(200).json({
+            id :user._id,
+            displayName: user.displayName,
+            email: user.email
+        });
+    }  catch (err) {
+        res.status(500).json({ message: err.message });
+    }
 }
 
-exports.post = async (req, res, next) => {
+exports.post = async (req, res) => {
     res.send("making a post request");
 }
-exports.put = (req, res, next) => {
+exports.put = (req, res) => {
     res.send("making a put request");
 }
-exports.delete = (req, res, next) => {
+exports.delete = (req, res) => {
     res.send("making a delete request");
 }
