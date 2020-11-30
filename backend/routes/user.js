@@ -99,6 +99,24 @@ router.post('/register', controller.register);
 router.post('/validate', controller.validate);
 
 /**
+ * @api                 {patch}      /user              Update user data
+ * @apiVersion 1.0.0
+ * @apiName PatchUser
+ * @apiGroup User
+ * @apiSuccess (2xx)    {json}      Success             200 OK; True
+ * @apiError   (4xx)    {json}      BadRequest          400 Bad Request; Missing x-auth-token.
+ * @apiError   (4xx)    {json}      Forbidden           401 Forbidden; x-auth-token unable to be verified.
+ * @apiError   (4xx)    {json}      NotFound            404 Not Found; user <code>id</code> not found.
+* @apiErrorExample Error-Response:
+ * HTTP/1.1 401 Bad Request
+ * {
+ *      false
+ * }
+ * @apiUse InternalServerError
+ */
+router.patch('/', auth, controller.patch);
+
+/**
  * @apiDefine InternalServerError
  * @apiVersion 1.0.0
  * @apiGroup User

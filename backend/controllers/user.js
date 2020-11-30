@@ -1,6 +1,7 @@
 const User = require('@models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { use } = require('../routes/user');
 
 exports.register = async (req, res) => {
     try {
@@ -105,6 +106,38 @@ exports.post = async (req, res) => {
 }
 exports.put = (req, res) => {
     res.send("making a put request");
+}
+exports.patch = async (req, res) => {
+    const { ...userData } = req.body.data;
+    console.log(userData);
+    try {
+        const user = await User.findById(req.user);
+        if (!user) {
+            return res.status(404).json({ message: "Problem retrieving user data"});
+        }
+        if (userData.password) {
+            if (userData.password && userData.password.length < 5) {
+                return res.status(400).json({ message: "The password needs to be at least 5 characters long." });
+            }
+            if (userData.password && userData.password !== userData.passwordCheck) {
+                return res.status(400).json({ message: "Password and Password Confirmation do not match."});
+            }
+            const isCurrentPass = await bcrypt.compare(userData.password, user.password);
+            if (isCurrentPass) {
+                delete userData[password]; 
+            } else {
+                const salt = await bcrypt.genSalt(10);
+                userData.password = await bcrypt.hash(userData.password, salt);
+            }
+        }
+
+        await User.findOneAndUpdate(res.user, { ...userData, updated_at: Date.now() }, { new: true });
+        return res.status(200).json({message: "success"});
+
+    } catch (err) {
+        res.status(500).json({message: err.message});
+    }
+
 }
 exports.delete = (req, res) => {
     res.send("making a delete request");
