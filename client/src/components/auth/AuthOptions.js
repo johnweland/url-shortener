@@ -14,7 +14,12 @@ export default function AuthOptions() {
         });
         localStorage.setItem("auth-token", "");
     }
-    return (
+    return (<>
+        {userData.user && (
+            <small className="navbar-text">
+                Welcome, {userData.user.displayName} &nbsp;
+            </small>
+        )}
         <ul className="navbar-nav">
             {
                 userData.user ? (
@@ -27,7 +32,7 @@ export default function AuthOptions() {
                         </button>
                         <ul className="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                             <li>
-                                <Link className="dropdown-item" aria-current="page" role="button" to="/">Profile</Link>
+                                <Link className="dropdown-item" aria-current="page" role="button" to="/profile">Profile</Link>
                             </li>
                             <li>
                                 <Link className="dropdown-item" aria-current="page" role="button" to="/">Settings</Link>
@@ -52,5 +57,6 @@ export default function AuthOptions() {
                     )
             }
         </ul>
+        </>
     )
 }

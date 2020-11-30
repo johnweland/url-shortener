@@ -27,6 +27,7 @@ server.use(express.json());
 server.use(cors());
 
 server.use((req, res, next) => {
+    console.log(req.connection.remoteAddress.split(":").pop())
     res.header('Access-Control-Allow-Origin', '*');
     res.header(
         'Access-Control-Allow-Headers',

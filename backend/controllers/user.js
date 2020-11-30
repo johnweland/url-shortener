@@ -86,7 +86,7 @@ exports.validate = async (req, res) => {
 
 exports.get = async (req, res) => {
     try {
-    const user = await User.findById(req.user);
+        const user = await User.findById(req.user);
         if(!user) {
             return res.status(404).json({message: 'User not found'});
         }
@@ -107,7 +107,11 @@ exports.put = (req, res) => {
     res.send("making a put request");
 }
 exports.patch = async (req, res) => {
-    const { ...userData } = req.body.data;
+    console.log(req.body);
+    if (!req.body || req.body.length <= 0) {
+        return res.status(204).json({message: "no data given"});
+    }
+    const { ...userData } = req.body;
 
     try {
         const user = await User.findById(req.user);
@@ -123,7 +127,7 @@ exports.patch = async (req, res) => {
             }
             const isCurrentPass = await bcrypt.compare(userData.password, user.password);
             if (isCurrentPass) {
-                delete userData[password]; 
+                delete userData['password']; 
             } else {
                 const salt = await bcrypt.genSalt(10);
                 userData.password = await bcrypt.hash(userData.password, salt);
@@ -131,7 +135,7 @@ exports.patch = async (req, res) => {
         }
 
         await User.findOneAndUpdate(res.user, { ...userData, updated_at: Date.now() }, { new: true });
-        return res.status(200).json({message: "success"});
+        return res.status(200).json({message: "successfully updated user information"});
 
     } catch (err) {
         res.status(500).json({message: err.message});

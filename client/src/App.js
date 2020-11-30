@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 import Axios from 'axios';
 import Header from './components/layout/Header';
 import Home from './components/pages/Home';
+import Profile from './components/pages/Profile';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import UserContext from "./context/UserContext";
@@ -55,6 +57,7 @@ export default function App() {
                     <Route exact path="/" component={Home} />
                     <Route path="/login" component={Login} />
                     <Route path="/register" component={Register} />
+                    <ProtectedRoute path="/profile" component={Profile} />
                 </Switch>
                 <Footer />
             </UserContext.Provider>
