@@ -1,7 +1,6 @@
 const User = require('@models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { use } = require('../routes/user');
 
 exports.register = async (req, res) => {
     try {
@@ -109,7 +108,7 @@ exports.put = (req, res) => {
 }
 exports.patch = async (req, res) => {
     const { ...userData } = req.body.data;
-    console.log(userData);
+
     try {
         const user = await User.findById(req.user);
         if (!user) {
